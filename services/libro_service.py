@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from models.libro import Libro
-from schemas import LibroCreate
+from schemas import LibroCreate, LibroUpdate
 
 
 # ---------------------------------------------
@@ -19,15 +19,7 @@ def listar_libros(db: Session):
 def crear_libro(db: Session, datos: LibroCreate):
     """
     Crea un nuevo libro en la base de datos.
-
-    Parámetros:
-        db: sesión de base de datos
-        datos: información validada del libro (Pydantic)
-
-    Retorna:
-        Libro creado
     """
-
     nuevo_libro = Libro(
         titulo=datos.titulo,
         autor=datos.autor,
@@ -39,3 +31,16 @@ def crear_libro(db: Session, datos: LibroCreate):
     db.refresh(nuevo_libro)
 
     return nuevo_libro
+
+
+# ---------------------------------------------
+# SERVICIO: OBTENER LIBRO POR ID
+# ---------------------------------------------
+def obtener_libro_por_id(db: Session, id: int):
+    """
+    Busca un libro por su ID.
+
+    Retorna:
+        Libro si existe, si no retorna None
+    """
+    return db.query(Libro).filter(Libro.id == id).first()
