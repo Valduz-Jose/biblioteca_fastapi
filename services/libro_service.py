@@ -7,9 +7,6 @@ from schemas import LibroCreate, LibroUpdate
 # SERVICIO: LISTAR LIBROS
 # ---------------------------------------------
 def listar_libros(db: Session):
-    """
-    Obtiene todos los libros de la base de datos.
-    """
     return db.query(Libro).all()
 
 
@@ -17,9 +14,6 @@ def listar_libros(db: Session):
 # SERVICIO: CREAR LIBRO
 # ---------------------------------------------
 def crear_libro(db: Session, datos: LibroCreate):
-    """
-    Crea un nuevo libro en la base de datos.
-    """
     nuevo_libro = Libro(
         titulo=datos.titulo,
         autor=datos.autor,
@@ -37,10 +31,34 @@ def crear_libro(db: Session, datos: LibroCreate):
 # SERVICIO: OBTENER LIBRO POR ID
 # ---------------------------------------------
 def obtener_libro_por_id(db: Session, id: int):
-    """
-    Busca un libro por su ID.
-
-    Retorna:
-        Libro si existe, si no retorna None
-    """
     return db.query(Libro).filter(Libro.id == id).first()
+
+
+# ---------------------------------------------
+# SERVICIO: ACTUALIZAR LIBRO
+# ---------------------------------------------
+def actualizar_libro(db: Session, id: int, datos: LibroUpdate):
+    """
+    Actualiza un libro existente.
+    Permite actualización parcial (solo campos enviados).
+    """
+
+    libro = db.query(Libro).filter(Libro.id == id).first()
+
+    if not libro:
+        return None
+
+    # Actualizar solo campos enviados (no None)
+    if datos.titulo is not None:
+        libro.titulo = datos.titulo
+
+    if datos.autor is not None:
+        libro.autor = datos.autor
+
+    if datos.rating is not None:
+        libro.rating = datos.rating
+
+    db.commit()
+    db.refresh(libro)
+
+    return libro
