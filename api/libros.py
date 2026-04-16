@@ -6,9 +6,10 @@ from database import get_db
 from services.libro_service import (
     listar_libros,
     crear_libro,
-    obtener_libro_por_id
+    obtener_libro_por_id,
+    actualizar_libro
 )
-from schemas import LibroRead, LibroCreate
+from schemas import LibroRead, LibroCreate, LibroUpdate
 
 # Router principal para libros
 router = APIRouter(
@@ -18,40 +19,26 @@ router = APIRouter(
 
 
 # ---------------------------------------------
-# ENDPOINT: LISTAR LIBROS
+# LISTAR LIBROS
 # ---------------------------------------------
 @router.get("/", response_model=List[LibroRead])
 def get_libros(db: Session = Depends(get_db)):
-    """
-    Devuelve todos los libros registrados en la base de datos.
-    """
     return listar_libros(db)
 
 
 # ---------------------------------------------
-# ENDPOINT: CREAR LIBRO
+# CREAR LIBRO
 # ---------------------------------------------
-@router.post(
-    "/",
-    response_model=LibroRead,
-    status_code=status.HTTP_201_CREATED
-)
+@router.post("/", response_model=LibroRead, status_code=status.HTTP_201_CREATED)
 def create_libro(libro: LibroCreate, db: Session = Depends(get_db)):
-    """
-    Crea un nuevo libro en la base de datos.
-    """
     return crear_libro(db, libro)
 
 
 # ---------------------------------------------
-# ENDPOINT: OBTENER LIBRO POR ID
+# OBTENER LIBRO POR ID
 # ---------------------------------------------
 @router.get("/{id}", response_model=LibroRead)
 def get_libro_by_id(id: int, db: Session = Depends(get_db)):
-    """
-    Obtiene un libro específico por su ID.
-    Si no existe, devuelve error 404.
-    """
     libro = obtener_libro_por_id(db, id)
 
     if not libro:
@@ -61,3 +48,23 @@ def get_libro_by_id(id: int, db: Session = Depends(get_db)):
         )
 
     return libro
+
+
+# ---------------------------------------------
+# ACTUALIZAR LIBRO
+# ---------------------------------------------
+@router.put("/{id}", response_model=LibroRead)
+def update_libro(id: int, datos: LibroUpdate, db: Session = Depends(get_db)):
+    """
+    Actualiza un libro existente.
+    """
+
+    libro_actualizado = actualizar_libro(db, id, datos)
+
+    if not libro_actualizado:
+        raise HTTPException(
+            status_code=404,
+            detail="Libro no encontrado"
+        )
+
+    return libro_actualizado
