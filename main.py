@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from api.libros import router as libros_router
 
 # Creamos una instancia de FastAPI
 # Esta será el núcleo de nuestra aplicación
@@ -15,3 +16,6 @@ def read_root():
     devuelve un mensaje simple en formato JSON.
     """
     return {"mensaje": "¡API de Biblioteca funcionando correctamente!"}
+
+# Registrar rutas de libros
+app.include_router(libros_router)
