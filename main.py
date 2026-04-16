@@ -1,21 +1,39 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from api.libros import router as libros_router
 
-# Creamos una instancia de FastAPI
-# Esta será el núcleo de nuestra aplicación
-app = FastAPI()
+# ---------------------------------------------
+# INSTANCIA PRINCIPAL DE FASTAPI
+# ---------------------------------------------
+app = FastAPI(
+    title="Biblioteca Personal API",
+    description="API REST para gestión de libros",
+    version="1.0.0"
+)
 
+# ---------------------------------------------
+# CONFIGURACIÓN CORS
+# ---------------------------------------------
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:4200",  # Angular
+        "http://localhost:5173"   # React (Vite)
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# Endpoint de prueba
+# ---------------------------------------------
+# ENDPOINT DE PRUEBA
+# ---------------------------------------------
 @app.get("/")
-def read_root():
-    """
-    Endpoint básico para verificar que la API está funcionando.
+def root():
+    return {"message": "API Biblioteca funcionando 🚀"}
 
-    Cuando accedemos a http://localhost:8000/
-    devuelve un mensaje simple en formato JSON.
-    """
-    return {"mensaje": "¡API de Biblioteca funcionando correctamente!"}
-
-# Registrar rutas de libros
+# ---------------------------------------------
+# INCLUIR ROUTERS
+# ---------------------------------------------
 app.include_router(libros_router)
