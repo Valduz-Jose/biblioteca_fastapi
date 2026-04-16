@@ -1,0 +1,34 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C Extensions
+*.so
+
+# Variabels de entorno (¡MUY IMPORTANTE!)
+# Aquí es donde guardas tu contraseña de MySQL; nunca debe subirse a GitHub.
+.env
+
+# Entorno Virtual
+venv/
+env/
+ENV/
+.venv/
+
+# IDEs (PyCharm, VSCode)
+.idea/
+.vscode/
+*.swp
+
+# Alembic (Archivos temporales o de configuración local)
+# Nota: La carpeta 'alembic/versions' SÍ debe subirse, 
+# pero no los logs o caches.
+alembic/*.log
+
+# Logs
+*.log
+
+# Archivos de Sistema
+Thumbs.db
+.DS_Store
