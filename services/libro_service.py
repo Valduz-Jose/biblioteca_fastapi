@@ -4,14 +4,14 @@ from schemas import LibroCreate, LibroUpdate
 
 
 # ---------------------------------------------
-# SERVICIO: LISTAR LIBROS
+# LISTAR LIBROS
 # ---------------------------------------------
 def listar_libros(db: Session):
     return db.query(Libro).all()
 
 
 # ---------------------------------------------
-# SERVICIO: CREAR LIBRO
+# CREAR LIBRO
 # ---------------------------------------------
 def crear_libro(db: Session, datos: LibroCreate):
     nuevo_libro = Libro(
@@ -28,27 +28,21 @@ def crear_libro(db: Session, datos: LibroCreate):
 
 
 # ---------------------------------------------
-# SERVICIO: OBTENER LIBRO POR ID
+# OBTENER LIBRO POR ID
 # ---------------------------------------------
 def obtener_libro_por_id(db: Session, id: int):
     return db.query(Libro).filter(Libro.id == id).first()
 
 
 # ---------------------------------------------
-# SERVICIO: ACTUALIZAR LIBRO
+# ACTUALIZAR LIBRO
 # ---------------------------------------------
 def actualizar_libro(db: Session, id: int, datos: LibroUpdate):
-    """
-    Actualiza un libro existente.
-    Permite actualización parcial (solo campos enviados).
-    """
-
     libro = db.query(Libro).filter(Libro.id == id).first()
 
     if not libro:
         return None
 
-    # Actualizar solo campos enviados (no None)
     if datos.titulo is not None:
         libro.titulo = datos.titulo
 
@@ -62,3 +56,25 @@ def actualizar_libro(db: Session, id: int, datos: LibroUpdate):
     db.refresh(libro)
 
     return libro
+
+
+# ---------------------------------------------
+# ELIMINAR LIBRO
+# ---------------------------------------------
+def eliminar_libro(db: Session, id: int):
+    """
+    Elimina un libro de la base de datos.
+
+    Retorna:
+        True si se eliminó, False si no existe
+    """
+
+    libro = db.query(Libro).filter(Libro.id == id).first()
+
+    if not libro:
+        return False
+
+    db.delete(libro)
+    db.commit()
+
+    return True
