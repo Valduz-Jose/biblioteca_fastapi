@@ -7,7 +7,8 @@ from services.libro_service import (
     listar_libros,
     crear_libro,
     obtener_libro_por_id,
-    actualizar_libro
+    actualizar_libro,
+    eliminar_libro
 )
 from schemas import LibroRead, LibroCreate, LibroUpdate
 
@@ -55,10 +56,6 @@ def get_libro_by_id(id: int, db: Session = Depends(get_db)):
 # ---------------------------------------------
 @router.put("/{id}", response_model=LibroRead)
 def update_libro(id: int, datos: LibroUpdate, db: Session = Depends(get_db)):
-    """
-    Actualiza un libro existente.
-    """
-
     libro_actualizado = actualizar_libro(db, id, datos)
 
     if not libro_actualizado:
@@ -68,3 +65,23 @@ def update_libro(id: int, datos: LibroUpdate, db: Session = Depends(get_db)):
         )
 
     return libro_actualizado
+
+
+# ---------------------------------------------
+# ELIMINAR LIBRO
+# ---------------------------------------------
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_libro(id: int, db: Session = Depends(get_db)):
+    """
+    Elimina un libro por su ID.
+    """
+
+    eliminado = eliminar_libro(db, id)
+
+    if not eliminado:
+        raise HTTPException(
+            status_code=404,
+            detail="Libro no encontrado"
+        )
+
+    return None
