@@ -163,6 +163,12 @@ Respuesta
 - 📊 Logs y monitoreo
 - 📦 CI/CD
 
+## 📸 Capturas
+
+<img width="1835" height="856" alt="Captura de pantalla 2026-04-16 143925" src="https://github.com/user-attachments/assets/78204f95-f8d0-4309-9e5a-44bcb29fe0ef" /> 
+<img width="559" height="830" alt="Captura de pantalla 2026-04-16 143905" src="https://github.com/user-attachments/assets/a16d0632-8c43-4c7a-9029-7a3e78385d6c" /> 
+<img width="418" height="157" alt="Captura de pantalla 2026-04-16 143848" src="https://github.com/user-attachments/assets/f66dd33f-2025-425c-ad30-1d2087a1d45f" />
+
 ## 👨‍💻 Autor
 
 José Alejandro Valduz Contreras
