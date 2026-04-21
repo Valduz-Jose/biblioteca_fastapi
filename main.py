@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.libros import router as libros_router
+from database import Base, engine
 
 # ---------------------------------------------
 # INSTANCIA PRINCIPAL DE FASTAPI
@@ -11,6 +12,7 @@ app = FastAPI(
     description="API REST para gestión de libros",
     version="1.0.0"
 )
+Base.metadata.create_all(bind=engine)
 
 # ---------------------------------------------
 # CONFIGURACIÓN CORS
